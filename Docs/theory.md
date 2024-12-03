@@ -206,6 +206,17 @@ After each insertion / deletion the BF must be updated and the tree must be bala
 ![alt text](image-18.png)
 
 #### Red Black Tree
+* Every Node is red or black
+* Root is always black
+* New insertions are always red
+* Every path from root-leaf has same number of black nodes
+* No path can have two consectutive red nodes
+* Nulls are black
+When we get violations of this rule:
+If black aunt rotate (BAR), then make parent black and children red. If red aunt we colour switch.
+
+![alt text](image-19.png)
+
 ## Heap / Priority Queue
 A heap can be implemented as a tree or as an array. The array form is more efficient, although it is still easier to visualise it as a tree regardless of implementation. The root/first value of the heap is always the min or max value depending on if you are using a min or max heap respectively. In a min heap the parent node must always be smaller then child nodes. In a max heap the parent must always be larger then the child nodes. When we insert/delete a value in heap we must maintain the heap property. With insertion we put the value in the next available spot in the heap as a leaf node and bubble up values to restore heap property. With deletion we remove the root/first value and move the last node / value into the root position. We then float the value down the heap to restore the heap property.  
 
