@@ -12,7 +12,7 @@ using Graph = vector<vector<pair<Cost,Index>>>;
 template <class Cost, class Index>
 void DFS(Graph<Cost,Index>& graph, Index node) {
     if(node >= graph.size()) {
-        cout << "Error, attempted to search outside graph" << endl;
+        cout << "Error, attempted to depth first search outside graph" << endl;
         exit(1);
     }
 
@@ -25,6 +25,11 @@ void DFS(Graph<Cost,Index>& graph, Index node) {
 //Demonstrate BFS Traversal
 template <class Cost, class Index>
 void BFS(Graph<Cost,Index>& graph, Index start) {
+    if(start >= graph.size()) {
+        cout << "Error, attempted to breadth first search outside graph" << endl;
+        exit(1);
+    }
+    
     queue<Index> indexQueue;
     indexQueue.push(start);
     
