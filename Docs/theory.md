@@ -26,6 +26,9 @@ n elements for each division O(n^2). The average complexity assumes pivot will l
 roughly in the middle of the array each time. This leads to O(log(n)) divisions and
 hence Θ(nlog(n)).
 
+## Distributed / Bucket Sort - O(n)
+Count the occurance of each element by storing them in buckets (i.e. array or hashmap) instead of comparing values against eachother.
+
 ## Topological Sort (Graph | Directed | Acyclic )
 DFS algorithm is faster for larger graphs.
 ### DFS Algorithm - O(V+E)
@@ -35,6 +38,15 @@ Must make sure there are no cycles in graph prior to running topological sort. P
 Find node with zero input edges. Add to output. Remove from graph adjacency list. Repeat until no nodes left.
 
 # Misc
+## Permutations
+Arranging data set in different ways
+
+## Subset
+Taking a subset of the data
+
+## Avoiding Duplicates
+Remove duplicates by sorting the data first and then skipping values that are the same.
+
 ## Kth Sorted Value
 ### Heap Method
 Push all values into a heap and pop K times. Will give you the Kth smallest/largest number depending on if you use a max or min heap.
@@ -96,7 +108,7 @@ Components that can all reach eachother. I.e. components that form a cycle.
 
 ![alt text](image-15.png)
 
-### Targan's Algorithm
+### Targan's Algorithm O(E+V)
 Randomly pick an unvisited starting node. Perform DFS on this node as we visit each node assign it a low link value. I.e. start numbering the nodes in the order you visit them 0 to n. Each of the nodes that are visited during a single DFS run are considered as nodes we are currently visiting. If we encounter a node we are already visiting we have a cycle! Compare the low link values of the two nodes and set the low link values of both nodes to the minimum of the two low link values. As we backtrack after searching we again update the low link values of the nodes. We mark the visiting nodes as visited on the backtrack. We then repeat this whole algorithm again on unvisited nodes.
 
 ### Kosaraju's Algorithm
@@ -141,12 +153,27 @@ Update the shortest path of visited nodes if the current distance is shorter tha
 
 ![alt text](dijkstra.png)
 
-## Bellman-Ford Algorithm
+## Bellman-Ford Algorithm - O(VE)
 Form a table of shortest distances to each node, where the values are originally set to infinity / none. Edges do not need to be processed in any particular order. Iterate through edges calculating distance. Perform V-1 iterations to get correct distance for all nodes. Is capable of detecting negative cycles and working with negative values. We run the algorithm with one additional iteration to check for negative cycles. If any of the vertex shortest distances are updated then we have a negative cycle.
 
 ![alt text](bellman-ford.png)
 
+Note: this algorithm does not use BFS or DFS, in fact it does not perform a
+traversal of the graph at all, but instead relaxation. This simply means
+determining if the distance to a node should be updated base on the cost to a
+neighboring node and the edge connecting them.
+
+Note: that the edges can be updated in ANY order, it does not matter.
+This is because inf + anything is still infinity. So regardless of t
+the order of edge relaxation the algorithm will still work the same way.
+![alt text](bellman.gif)
+
+## Floyd Warshall Algorithm - O(V^3)
+Works on adjacency matrix rather than adjacency list.
+Finds the shortest path for all pairs of nodes, unlike the previous algorithms that only find the shortest path between two nodes. Keeps track of intermediate paths between nodes to find the optimal paths. Note that this algorithm also provides transitive closure as it tells us what nodes link to what other nodes. Nodes that don't have any connecting path will have value infinity.
+
 ## A* Algorithm
+Dijkstra's Algorithm with an additional heuristic that determines how good a potential move is. Dijkstra's blindly moves to find the shortest path, where as A* has a concept of where the goal is. For example the heuristic could be a vector that points from current position to the goal.
 
 # Data Structures
 ## Array
@@ -166,7 +193,7 @@ LIFO - Last In First Out. Like a stack of plates. Very fast O(1) push, pop and t
 FIFO - First In First Out. Like waiting in line.
 Very fast O(1) push, pop and front oppertations. Typically implemented using a linked list to get O(1) insertions.
 
-## HashTable / HashMap
+## HashTable / HashMap / Dictionary
 Map one data type to another. Uses a large vector underneath and a hashing function to convert input data type into a index within the internal vector. Since hashmap uses an underlying vector, amortised operations are O(1). 
 
 ## Graph
@@ -205,6 +232,8 @@ After each insertion / deletion the BF must be updated and the tree must be bala
 ![alt text](image-17.png)
 ![alt text](image-18.png)
 
+AVL trees are faster for searching / lookup compared to red black trees due to stricter balancing requirements.
+
 #### Red Black Tree
 * Every Node is red or black
 * Root is always black
@@ -217,8 +246,12 @@ If black aunt rotate (BAR), then make parent black and children red. If red aunt
 
 ![alt text](image-19.png)
 
+When comparing with AVL tree, there are less rotations required during balancing.
+That is because AVL trees have less strict requirements around balancing compared to AVL trees
+RB trees are faster for insertion and deletion when compared to AVL trees due to the less strict balancing requirements.
+
 ## Heap / Priority Queue
-A heap can be implemented as a tree or as an array. The array form is more efficient, although it is still easier to visualise it as a tree regardless of implementation. The root/first value of the heap is always the min or max value depending on if you are using a min or max heap respectively. In a min heap the parent node must always be smaller then child nodes. In a max heap the parent must always be larger then the child nodes. When we insert/delete a value in heap we must maintain the heap property. With insertion we put the value in the next available spot in the heap as a leaf node and bubble up values to restore heap property. With deletion we remove the root/first value and move the last node / value into the root position. We then float the value down the heap to restore the heap property.  
+A heap can be implemented as a tree or as an array. The array form is more efficient, although it is still easier to visualise it as a tree regardless of implementation. The root/first value of the heap is always the min or max value depending on if you are using a min or max heap respectively. In a min heap the parent node must always be smaller then child nodes. In a max heap the parent must always be larger then the child nodes. When we insert/delete a value in heap we must maintain the heap property. With insertion we put the value in the next available spot in the heap as a leaf node and bubble up values to restore heap property. With deletion we remove the root/first value and move the last node / value into the root position. We then float the value down the heap to restore the heap property. This involves comparing the parent node against its children to see who is largest and swapping the parent out for the largest child if the parent is not the largest of the nodes. This process is repeated until the heap property has been restored.  
 
 ![alt text](image-5.png)
 
@@ -226,6 +259,7 @@ A heap can be implemented as a tree or as an array. The array form is more effic
 A trie (prenounced try) is a data structure that can check for string pattern matching quickly by storing the possible combinations of letters/symbols as nodes in a tree. All opperations, insertion, deletion and searching all take O(n) time.
 
 ![alt text](image-6.png)
+
 ## Union Find
 Union Find is a data structure that groups elements together (union) and can check if one element is in the same group as another (find). This is done by keeping an array where there is a single index for each element (and a map that hashes data to index if required). The data in the array points to the index of another element in the group. Initially each element points to itself. Path compression updates the index of elements to point to root of group whenever possible to mimimise the amount of indirection when determining if two elements belong to the same group. With path compression union find is O(1) amortised time for both opperations union and find.
 
